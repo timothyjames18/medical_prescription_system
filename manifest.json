@@ -1,0 +1,9 @@
+{
+    "name": "Dr. Timothy Rx",
+    "short_name": "DrTimRx",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f8f9fa",
+    "theme_color": "#007BFF",
+    "icons": [{"src": "pictures/profile.jpg", "sizes": "192x192"}]
+}
