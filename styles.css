@@ -38,30 +38,18 @@ body {
         color: var(--primary);
     }
 
-/* Emergency Banner */
-.emergency {
-    background: var(--secondary);
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    font-weight: bold;
-}
-
-/* Header & Navigation */
+/* CLEAN HEADER - No blue background or lines */
 header {
-    background: linear-gradient(135deg, var(--primary), #0056b3);
-    color: white;
-    padding: 1rem 0;
+    background: rgba(255,255,255,0.98); /* Subtle white */
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow); /* Only shadow, no blue */
     position: sticky;
     top: 0;
     z-index: 100;
 }
 
 nav {
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(10px);
     padding: 1rem;
-    box-shadow: var(--shadow);
 }
 
     nav ul {
@@ -76,21 +64,23 @@ nav {
         color: var(--text);
         text-decoration: none;
         font-weight: 500;
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1.5rem;
         border-radius: 25px;
         transition: all 0.3s;
+        white-space: nowrap;
     }
 
         nav a:hover, nav a.active {
             background: var(--primary);
             color: white;
+            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
         }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0,123,255,0.8), rgba(0,123,255,0.8)), url('https://images.unsplash.com/photo-1576091160399-1d65c279c975?w=1200') center/cover;
+    background: linear-gradient(rgba(0,123,255,0.85), rgba(0,123,255,0.85)), url('https://images.unsplash.com/photo-1576091160399-1d65c279c975?w=1200') center/cover;
     color: white;
-    padding: 6rem 2rem;
+    padding: 8rem 2rem 6rem;
     text-align: center;
 }
 
@@ -102,7 +92,7 @@ nav {
 
     .hero p {
         font-size: 1.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
     }
 
 /* Buttons */
@@ -115,19 +105,26 @@ nav {
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.3s;
+    transition: all 0.3s;
     margin: 0.5rem;
     text-decoration: none;
     display: inline-block;
+    box-shadow: 0 4px 15px rgba(40,167,69,0.4);
 }
 
     .cta-button:hover {
-        transform: scale(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40,167,69,0.5);
     }
 
     .cta-button.secondary {
         background: var(--primary);
+        box-shadow: 0 4px 15px rgba(0,123,255,0.4);
     }
+
+        .cta-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(0,123,255,0.5);
+        }
 
 .print-btn {
     background: var(--secondary);
@@ -138,21 +135,37 @@ nav {
     font-size: 1.1rem;
     cursor: pointer;
     margin: 1rem;
+    transition: all 0.3s;
 }
 
     .print-btn:hover {
         background: #218838;
+        transform: translateY(-2px);
     }
 
     .print-btn.secondary {
         background: #6c757d;
     }
 
-/* About Section */
+        .print-btn.secondary:hover {
+            background: #5a6268;
+        }
+
+.full-width {
+    width: 100%;
+}
+
+.small {
+    padding: 0.8rem 1.5rem !important;
+    font-size: 1rem !important;
+}
+
+/* Light Background */
 .light-bg {
     background: var(--light);
 }
 
+/* About Section */
 .about-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -162,23 +175,29 @@ nav {
 
 .doctor-photo {
     width: 100%;
+    height: 400px;
+    object-fit: cover;
     border-radius: 15px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
 .about-text h3 {
     margin-bottom: 1rem;
+    color: var(--primary);
 }
 
 .badges {
     margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .badge {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    margin-right: 1rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
     font-weight: bold;
+    font-size: 0.9rem;
 }
 
     .badge.success {
@@ -200,12 +219,12 @@ nav {
 
 .service-card {
     background: white;
-    padding: 2.5rem;
+    padding: 2.5rem 2rem;
     border-radius: 15px;
     box-shadow: var(--shadow);
     text-align: center;
     transition: all 0.3s;
-    border-top: 5px solid var(--primary);
+    border-top: 4px solid var(--primary);
 }
 
     .service-card:hover {
@@ -216,17 +235,23 @@ nav {
 .service-icon {
     font-size: 3rem;
     margin-bottom: 1rem;
+    display: block;
+}
+
+.service-card h3 {
+    margin-bottom: 1rem;
+    color: var(--primary);
 }
 
 /* Prescription Forms */
 .prescription-login,
 .prescription-form {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto 3rem;
     background: white;
     padding: 3rem;
-    border-radius: 15px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
 }
 
 .prescription-form {
@@ -234,18 +259,20 @@ nav {
 }
 
 .input-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .login-hint {
     font-size: 0.9rem;
     color: #666;
+    margin-top: 1rem;
 }
 
     .login-hint code {
         background: #e9ecef;
-        padding: 0.2rem 0.4rem;
+        padding: 0.3rem 0.5rem;
         border-radius: 4px;
+        font-family: monospace;
     }
 
 .form-row {
@@ -269,28 +296,42 @@ nav {
 
 input, select, textarea {
     width: 100%;
-    padding: 1rem;
-    border: 2px solid #ddd;
-    border-radius: 8px;
+    padding: 1.2rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
     font-size: 1rem;
-    transition: border-color 0.3s;
+    transition: all 0.3s;
+    background: #fafbfc;
 }
 
     input:focus, select:focus, textarea:focus {
         outline: none;
         border-color: var(--primary);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
     }
 
-.form-section h4 {
-    margin-bottom: 1rem;
-    color: var(--primary);
+.form-section {
+    margin: 2.5rem 0;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
 }
+
+    .form-section h4 {
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+        font-size: 1.3rem;
+    }
 
 .medication-row {
     display: flex;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     align-items: end;
+    padding: 1.5rem;
+    background: #f8f9ff;
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
 }
 
     .medication-row input,
@@ -302,50 +343,74 @@ input, select, textarea {
     background: var(--danger);
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
     cursor: pointer;
     white-space: nowrap;
+    font-weight: 500;
+    transition: all 0.3s;
 }
 
-.cta-button.small {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-}
+    .remove-med:hover {
+        background: #c82333;
+        transform: scale(1.05);
+    }
 
 .form-actions {
     text-align: center;
-    margin-top: 2rem;
+    margin: 3rem 0;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 15px;
 }
 
 .prescription-preview {
     background: white;
     margin-top: 3rem;
-    padding: 2rem;
-    border-radius: 10px;
+    padding: 2.5rem;
+    border-radius: 15px;
     box-shadow: var(--shadow);
     display: none;
+    border-top: 5px solid var(--secondary);
 }
+
+    .prescription-preview h4 {
+        color: var(--secondary);
+        margin-bottom: 1.5rem;
+    }
 
 /* Contact */
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
+    align-items: start;
 }
 
-.contact-info h3 {
-    margin-bottom: 1rem;
+.contact-info {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
 }
+
+    .contact-info h3 {
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+    }
 
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
 }
 
     .contact-form .form-row {
-        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
     }
 
 /* Footer */
@@ -354,32 +419,62 @@ footer {
     color: white;
     text-align: center;
     padding: 3rem 0;
+    margin-top: 5rem;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.5rem;
+    footer p {
+        margin-bottom: 0.5rem;
     }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .about-grid,
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 6rem 1rem 4rem;
+    }
+
+        .hero h1 {
+            font-size: 2.5rem;
+        }
 
     nav ul {
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
+        padding: 1rem 0;
     }
 
-    .about-grid,
-    .contact-grid,
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
+    .form-row,
     .medication-row {
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr !important;
+        flex-direction: column !important;
     }
 
     .container {
-        padding: 0 1rem;
+        padding: 0 1.5rem;
+    }
+
+    .section {
+        padding: 3rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .cta-button {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        display: block;
+        margin: 0.75rem auto;
+        max-width: 280px;
     }
 }
