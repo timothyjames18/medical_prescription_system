@@ -324,14 +324,26 @@ input, select, textarea {
     }
 
 .medication-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
     gap: 1rem;
     margin-bottom: 1.5rem;
-    align-items: end;
     padding: 1.5rem;
     background: #f8f9ff;
     border-radius: 12px;
     border: 2px solid #e9ecef;
+    align-items: end;
+}
+.med-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .medication-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
 }
 
     .medication-row input,
@@ -477,4 +489,31 @@ footer {
         margin: 0.75rem auto;
         max-width: 280px;
     }
+}
+#offline-status {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+    z-index: 10000;
+    font-size: 0.9rem;
+}
+
+#offline-status.online { 
+    background: #28a745; 
+    color: white; 
+}
+
+#offline-status.offline { 
+    background: #007BFF; 
+    color: white; 
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
 }

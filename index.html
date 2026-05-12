@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ADD THESE 2 LINES -->
     <link rel="manifest" href="manifest.json">
-    <!-- END ADD -->
-    <title>Dr. Timothy James - Family Medicine & Prescription Services</title>
+    <title>Dr. Timothy James - Offline Rx</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -122,31 +120,25 @@
                 </div>
 
                 <div class="form-section">
-                    <h4>Medications</h4>
+                    <h4>💊 Medications</h4>
                     <div id="medications">
                         <div class="medication-row" data-index="0">
-                            <select class="med-select">
-                                <option>Amoxicillin 500mg</option>
-                                <option>Ibuprofen 400mg</option>
-                                <option>Lisinopril 10mg</option>
-                                <option>Metformin 500mg</option>
-                                <option>Custom...</option>
-                            </select>
+                            <input type="text" class="med-name" placeholder="Medication (e.g., Amoxicillin 500mg)" required>
                             <input type="text" class="med-dosage" placeholder="Dosage (e.g., 1 tablet)">
                             <input type="text" class="med-freq" placeholder="Frequency (e.g., twice daily)">
                             <input type="text" class="med-duration" placeholder="Duration (e.g., 7 days)">
                             <button type="button" class="remove-med" onclick="removeMed(this)">Remove</button>
                         </div>
                     </div>
-                    <button type="button" class="cta-button small" onclick="addMedication()">+ Add Medication</button>
+                    <button type="button" class="cta-button small" onclick="addMedication()">+ Add Another Medication</button>
                 </div>
 
                 <div class="form-group full">
-                    <textarea id="instructions" placeholder="Special Instructions / Refills" rows="4"></textarea>
+                    <textarea id="instructions" placeholder="Special Instructions / Refills / Warnings" rows="4"></textarea>
                 </div>
 
                 <div class="form-actions">
-                    <button class="print-btn" onclick="generatePrescription()">🖨️ Generate & Print</button>
+                    <button class="print-btn" onclick="generatePrescription()">🖨️ Generate & Print Prescription</button>
                     <button class="print-btn secondary" onclick="clearForm()">Clear Form</button>
                 </div>
 
@@ -154,6 +146,7 @@
                 <div id="preview" class="prescription-preview">
                     <h4>📄 Prescription Preview</h4>
                     <div id="previewContent"></div>
+                    <button class="print-btn" onclick="printPrescription()" style="margin-top: 1rem;">🖨️ Print Rx</button>
                 </div>
             </div>
         </div>
