@@ -143,7 +143,10 @@ function showPassMsg(text, type) {
 // NAVIGATION
 // ===========================
 function showView(viewId, navId) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => {
+        v.classList.remove('active');
+        v.classList.remove('hidden');
+    });
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(viewId).classList.add('active');
     if (navId) document.getElementById(navId).classList.add('active');
