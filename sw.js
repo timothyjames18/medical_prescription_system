@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dr-rx-v2';
+const CACHE_NAME = 'dr-rx-v3';
 const ASSETS = [
     './',
     './index.html',
@@ -25,6 +25,14 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+    // Always fetch script.js and index.html fresh from network — never serve from cache
+    if (e.request.url.includes('script.js') || e.request.url.includes('index.html')) {
+        e.respondWith(
+            fetch(e.request).catch(() => caches.match(e.request))
+        );
+        return;
+    }
+    // For everything else, use cache-first strategy
     e.respondWith(
         caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('./index.html')))
     );
