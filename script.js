@@ -20,6 +20,46 @@ let isLoggedIn = false;
 let rxCounter = parseInt(localStorage.getItem('rxCounter') || '0');
 let currentPreviewData = null;
 
+// Firestore document that stores the authoritative counter
+const COUNTER_DOC_ID = 'rxCounter';
+
+/**
+ * Load the authoritative rxCounter from Firestore.
+ * Falls back to localStorage when offline.
+ * Always keeps local cache in sync so offline increments
+ * don't collide with the cloud value.
+ */
+async function loadRxCounter() {
+    if (!db) return; // offline — keep local value
+    try {
+        const doc = await db.collection(COLLECTION_PROFILE).doc(COUNTER_DOC_ID).get();
+        if (doc.exists) {
+            const cloudVal = doc.data().value || 0;
+            // Use whichever is larger to avoid reusing IDs after offline work
+            if (cloudVal > rxCounter) {
+                rxCounter = cloudVal;
+                localStorage.setItem('rxCounter', rxCounter);
+            }
+        }
+    } catch (err) {
+        console.warn('Could not load rxCounter from Firestore, using local value:', err);
+    }
+}
+
+/**
+ * Persist the current rxCounter to both localStorage and Firestore.
+ */
+async function persistRxCounter() {
+    localStorage.setItem('rxCounter', rxCounter);
+    if (db) {
+        try {
+            await db.collection(COLLECTION_PROFILE).doc(COUNTER_DOC_ID).set({ value: rxCounter });
+        } catch (err) {
+            console.warn('Could not sync rxCounter to Firestore:', err);
+        }
+    }
+}
+
 // ===========================
 // FIREBASE SETUP
 // ===========================
@@ -59,6 +99,7 @@ function initFirebase() {
             });
 
         console.log('✅ Firebase connected');
+        loadRxCounter(); // sync cross-device counter after db is ready
     } catch (err) {
         console.error('Firebase init failed:', err);
         showToast('⚠ Cloud sync unavailable — running locally');
@@ -257,7 +298,7 @@ function generatePrescription() {
 
     getProfile().then(profile => {
         rxCounter++;
-        localStorage.setItem('rxCounter', rxCounter);
+        persistRxCounter(); // sync to Firestore + localStorage
 
         const today = new Date();
         const rxId = `RX-${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}-${String(rxCounter).padStart(4, '0')}`;
@@ -535,22 +576,34 @@ async function renderHistory() {
             </div>
             <span class="history-rx-id">${esc(item.rxId)}</span>
             <div class="history-actions">
-                <button class="btn-sm"           onclick="reprintFromHistory(${idx})">🖨 Print</button>
-                <button class="btn-ghost danger" onclick="deleteHistoryItem('${esc(item.rxId)}', ${idx})">✕</button>
+                <button class="btn-sm"           onclick="reprintFromHistory('${esc(item.rxId)}')">🖨 Print</button>
+                <button class="btn-ghost danger" onclick="deleteHistoryItem('${esc(item.rxId)}')">✕</button>
             </div>
         </div>
     `).join('');
 }
 
-function reprintFromHistory(idx) {
-    const item = getLocalHistory()[idx];
-    if (!item) return;
+async function reprintFromHistory(rxId) {
+    // Prefer cloud data, fall back to local cache
+    let item = null;
+    if (db) {
+        try {
+            const doc = await db.collection(COLLECTION_HISTORY).doc(rxId).get();
+            if (doc.exists) item = doc.data();
+        } catch (err) {
+            console.warn('Firestore reprint fetch failed, trying local:', err);
+        }
+    }
+    if (!item) {
+        item = getLocalHistory().find(r => r.rxId === rxId) || null;
+    }
+    if (!item) { showToast('⚠ Prescription not found'); return; }
     openPrintWindow(item.rxId, item.html);
 }
 
-async function deleteHistoryItem(rxId, idx) {
-    const local = getLocalHistory();
-    local.splice(idx, 1);
+async function deleteHistoryItem(rxId) {
+    // Remove from local cache by rxId (index-independent)
+    const local = getLocalHistory().filter(r => r.rxId !== rxId);
     localStorage.setItem('rxHistory', JSON.stringify(local));
 
     if (db) {
