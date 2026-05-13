@@ -145,7 +145,6 @@ function showPassMsg(text, type) {
 function showView(viewId, navId) {
     document.querySelectorAll('.view').forEach(v => {
         v.classList.remove('active');
-        v.classList.remove('hidden');
     });
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(viewId).classList.add('active');
@@ -241,7 +240,7 @@ function generatePrescription() {
     localStorage.setItem('rxCounter', rxCounter);
 
     const today = new Date();
-    const rxId = `RX-${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}-${String(rxCounter).padStart(4,'0')}`;
+    const rxId = `RX-${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}-${String(rxCounter).padStart(4, '0')}`;
     const dateStr = today.toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' });
     const dobStr = patientDOB ? new Date(patientDOB + 'T00:00:00').toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
 
@@ -437,7 +436,7 @@ function emailPrescription() {
 // ===========================
 function clearForm() {
     if (!confirm('Clear all prescription fields?')) return;
-    ['patientName','patientAge','patientDOB','patientAddress','symptoms','diagnosis','instructions','followUp']
+    ['patientName', 'patientAge', 'patientDOB', 'patientAddress', 'symptoms', 'diagnosis', 'instructions', 'followUp']
         .forEach(id => document.getElementById(id).value = '');
     document.getElementById('patientSex').value = '';
     document.getElementById('refills').value = '0';
