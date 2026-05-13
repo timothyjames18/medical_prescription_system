@@ -39,8 +39,8 @@ const firebaseConfig = {
     projectId: "medical-prescrip-system",
     storageBucket: "medical-prescrip-system.firebasestorage.app",
     messagingSenderId: "842790178792",
-    appId: "1:842790178792:web:5414719a289dcb2889de5d",
-    measurementId: "G-1C5WVPZC18"
+    appId: "1:842790178792:web:0e8d597b0b36971d89de5d",
+    measurementId: "G-T0WDJRPTDJ"
 };
 
 // Initialize Firebase
