@@ -23,15 +23,6 @@ let currentPreviewData = null;
 // ===========================
 // FIREBASE SETUP
 // ===========================
-// 🔧 REPLACE these values with your own Firebase project config
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: "AIzaSyDorYams0KICFRLIYwhosgSdk2Mb6ue9fY",
     authDomain: "medical-prescrip-system.firebaseapp.com",
@@ -43,10 +34,6 @@ const firebaseConfig = {
     measurementId: "G-T0WDJRPTDJ"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
 // Firestore collection names
 const COLLECTION_HISTORY = 'prescriptions';
 const COLLECTION_PROFILE = 'settings';
@@ -57,7 +44,7 @@ let db = null; // Firestore instance, set after Firebase loads
 function initFirebase() {
     try {
         if (!firebase.apps.length) {
-            firebase.initializeApp(FIREBASE_CONFIG);
+            firebase.initializeApp(firebaseConfig);
         }
         db = firebase.firestore();
 
