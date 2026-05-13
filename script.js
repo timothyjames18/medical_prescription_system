@@ -84,7 +84,6 @@ async function loginDoctor() {
         }
         isLoggedIn = true;
         document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
         document.getElementById('loginError').classList.add('hidden');
         document.getElementById('doctorPass').value = '';
     } else {
@@ -96,7 +95,6 @@ async function loginDoctor() {
 
 function logout() {
     isLoggedIn = false;
-    document.getElementById('mainApp').classList.add('hidden');
     document.getElementById('loginScreen').classList.remove('hidden');
     document.getElementById('doctorPass').value = '';
     document.getElementById('loginError').classList.add('hidden');
