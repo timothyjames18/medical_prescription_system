@@ -1,190 +1,286 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
-    <title>Dr. Timothy James - Offline Rx</title>
+    <title>Dr. Timothy James — Rx System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<div id="offlineBanner" class="offline-banner hidden">📴 Offline mode — Rx system fully functional</div>
 
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#prescription">Prescription</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <div class="login-logo">⚕</div>
+        <h1>Dr. Timothy James</h1>
+        <p class="login-sub">Family Medicine · Digital Rx System</p>
+        <div class="login-form">
+            <label for="doctorPass">Doctor Password</label>
+            <input type="password" id="doctorPass" placeholder="Enter password" autocomplete="current-password"
+                onkeydown="if(event.key==='Enter') loginDoctor()">
+            <p class="login-error hidden" id="loginError">❌ Incorrect password. Try again.</p>
+            <button class="btn-primary full" onclick="loginDoctor()">Access System</button>
+            <p class="login-hint">Demo password: <code>doctor123</code></p>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="mainApp" class="main-app hidden">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="doc-avatar" id="sidebarAvatar">TJ</div>
+            <div>
+                <div class="doc-name" id="sidebarName">Dr. Timothy James</div>
+                <div class="doc-title" id="sidebarSpec">Family Medicine</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" onclick="showView('rxView','navRx')" id="navRx">
+                <span class="nav-icon">💊</span> New Prescription
+            </button>
+            <button class="nav-btn" onclick="showView('historyView','navHistory')" id="navHistory">
+                <span class="nav-icon">📋</span> Rx History
+                <span class="nav-badge" id="historyCount">0</span>
+            </button>
+            <button class="nav-btn" onclick="showView('profileView','navProfile')" id="navProfile">
+                <span class="nav-icon">🏥</span> Clinic Info
+            </button>
         </nav>
-    </header>
 
-    <!-- Hero -->
-    <section id="home" class="hero">
-        <div class="container">
-            <h1>Dr. Timothy James</h1>
-            <p>Board-Certified Family Medicine<br>Quality Care with Digital Prescriptions</p>
-            <button class="cta-button" onclick="scrollTo('prescription')">Generate Prescription</button>
-            <button class="cta-button secondary" onclick="window.open('tel:+639505598253')">Call Office</button>
+        <div class="sidebar-footer">
+            <button class="nav-btn logout" onclick="logout()">
+                <span class="nav-icon">🔒</span> Lock System
+            </button>
         </div>
-    </section>
+    </aside>
 
-    <!-- About -->
-    <section id="about" class="section light-bg">
-        <div class="container">
-            <h2>Meet Your Doctor</h2>
-            <div class="about-grid">
-                <img src="pictures/profile.jpg" alt="Dr. Timothy James" class="doctor-photo">
-                <div class="about-text">
-                    <h3>20+ Years Experience • 5000+ Patients</h3>
-                    <p>
-                        Dr. Timothy James specializes in family medicine with a focus on preventive care and chronic disease management.
-                        Digital prescriptions available for your convenience.
-                    </p>
-                    <div class="badges">
-                        <span class="badge success">✅ Board Certified</span>
-                        <span class="badge primary">📜 Digital Rx Available</span>
-                    </div>
+    <!-- Mobile top bar -->
+    <div class="mobile-topbar">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <span>Rx System</span>
+        <button class="btn-sm-icon" onclick="logout()">🔒</button>
+    </div>
+    <div class="sidebar-overlay hidden" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Main content -->
+    <main class="main-content">
+
+        <!-- ===== NEW PRESCRIPTION VIEW ===== -->
+        <div id="rxView" class="view active">
+            <div class="view-header">
+                <div>
+                    <h2>New Prescription</h2>
+                    <p class="view-sub" id="liveDateDisplay"></p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-ghost" onclick="clearForm()">✕ Clear</button>
+                    <button class="btn-primary" onclick="generatePrescription()">🖨 Generate Rx</button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Services -->
-    <section id="services" class="section">
-        <div class="container">
-            <h2>Medical Services</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">🏥</div>
-                    <h3>Physical Exams</h3>
-                    <p>Comprehensive annual checkups and wellness visits.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">💊</div>
-                    <h3>Prescriptions</h3>
-                    <p>Digital prescriptions - print or email instantly.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">❤️</div>
-                    <h3>Chronic Care</h3>
-                    <p>Diabetes, hypertension, cholesterol management.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🩺</div>
-                    <h3>Lab Orders</h3>
-                    <p>Bloodwork, urinalysis, and diagnostic testing.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            <div class="rx-form-grid">
 
-    <!-- Prescription Generator -->
-    <section id="prescription" class="section light-bg">
-        <div class="container">
-            <h2>🔒 Prescription Generator</h2>
-
-            <!-- Login Form -->
-            <div class="prescription-login" id="loginForm">
-                <h3>Doctor Login</h3>
-                <div class="input-group">
-                    <input type="password" id="doctorPass" placeholder="Enter Password">
-                    <button class="cta-button full-width" onclick="loginDoctor()">Access Prescription System</button>
-                </div>
-                <p class="login-hint">Demo: <code>doctor123</code></p>
-            </div>
-
-            <!-- Prescription Form -->
-            <div class="prescription-form" id="prescriptionForm">
-                <h3>📋 Create New Prescription</h3>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <input type="text" id="patientName" placeholder="Patient Full Name *" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="patientAge" placeholder="Age / DOB">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group full">
-                        <textarea id="symptoms" placeholder="Symptoms / Chief Complaint" rows="3"></textarea>
-                    </div>
-                    <div class="form-group full">
-                        <textarea id="diagnosis" placeholder="Diagnosis" rows="3"></textarea>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h4>💊 Medications</h4>
-                    <div id="medications">
-                        <div class="medication-row" data-index="0">
-                            <input type="text" class="med-name" placeholder="Medication (e.g., Amoxicillin 500mg)" required>
-                            <input type="text" class="med-dosage" placeholder="Dosage (e.g., 1 tablet)">
-                            <input type="text" class="med-freq" placeholder="Frequency (e.g., twice daily)">
-                            <input type="text" class="med-duration" placeholder="Duration (e.g., 7 days)">
-                            <button type="button" class="remove-med" onclick="removeMed(this)">Remove</button>
+                <!-- Patient Info -->
+                <div class="card">
+                    <div class="card-title">👤 Patient Information</div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Full Name <span class="req">*</span></label>
+                            <input type="text" id="patientName" placeholder="e.g. Juan dela Cruz" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>Age</label>
+                            <input type="number" id="patientAge" placeholder="e.g. 45" min="0" max="120">
                         </div>
                     </div>
-                    <button type="button" class="cta-button small" onclick="addMedication()">+ Add Another Medication</button>
-                </div>
-
-                <div class="form-group full">
-                    <textarea id="instructions" placeholder="Special Instructions / Refills / Warnings" rows="4"></textarea>
-                </div>
-
-                <div class="form-actions">
-                    <button class="print-btn" onclick="generatePrescription()">🖨️ Generate & Print Prescription</button>
-                    <button class="print-btn secondary" onclick="clearForm()">Clear Form</button>
-                </div>
-
-                <!-- Preview -->
-                <div id="preview" class="prescription-preview">
-                    <h4>📄 Prescription Preview</h4>
-                    <div id="previewContent"></div>
-                    <button class="print-btn" onclick="printPrescription()" style="margin-top: 1rem;">🖨️ Print Rx</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="section light-bg">
-        <div class="container">
-            <h2>Contact Information</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>📍 Santa Maria Bulacan</h3>
-                    <p>
-                        <strong>Phone:</strong> 09505598253<br>
-                        <strong>Fax:</strong> 0938729029<br>
-                        <strong>Email:</strong> tjblazo21@gmail.com<br><br>
-                        Mon-Fri: 8AM-6PM | Sat: 9AM-2PM
-                    </p>
-                </div>
-                <form class="contact-form">
-                    <div class="form-row">
-                        <input type="text" placeholder="Your Name" required>
-                        <input type="email" placeholder="Email" required>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Date of Birth</label>
+                            <input type="date" id="patientDOB">
+                        </div>
+                        <div class="form-group">
+                            <label>Sex</label>
+                            <select id="patientSex">
+                                <option value="">— Select —</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
                     </div>
-                    <textarea placeholder="Health concern or prescription refill request..." rows="4"></textarea>
-                    <button type="submit" class="cta-button">Send Message</button>
-                </form>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="patientAddress" placeholder="Patient address (optional)">
+                    </div>
+                </div>
+
+                <!-- Clinical Notes -->
+                <div class="card">
+                    <div class="card-title">🩺 Clinical Notes</div>
+                    <div class="form-group">
+                        <label>Chief Complaint / Symptoms</label>
+                        <textarea id="symptoms" rows="3" placeholder="e.g. Fever, headache, productive cough for 3 days"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Diagnosis</label>
+                        <textarea id="diagnosis" rows="3" placeholder="e.g. Community-acquired pneumonia, mild"></textarea>
+                    </div>
+                </div>
+
+                <!-- Medications -->
+                <div class="card full-width">
+                    <div class="card-title-row">
+                        <div class="card-title">💊 Medications <span class="req">*</span></div>
+                        <button class="btn-sm" onclick="addMedication()">+ Add Medication</button>
+                    </div>
+                    <div class="med-table-header">
+                        <span>Medication &amp; Strength</span>
+                        <span>Dosage</span>
+                        <span>Frequency</span>
+                        <span>Duration</span>
+                        <span></span>
+                    </div>
+                    <div id="medications"></div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="card full-width">
+                    <div class="card-title">📝 Instructions &amp; Follow-up</div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Special Instructions / Warnings</label>
+                            <textarea id="instructions" rows="4" placeholder="e.g. Take with food. Avoid alcohol. Return if symptoms worsen."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Refills Allowed</label>
+                            <select id="refills">
+                                <option value="0">No refills</option>
+                                <option value="1">1 refill</option>
+                                <option value="2">2 refills</option>
+                                <option value="3">3 refills</option>
+                                <option value="PRN">PRN (as needed)</option>
+                            </select>
+                            <label style="margin-top:1.2rem;display:block;">Follow-up Date</label>
+                            <input type="date" id="followUp">
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- end rx-form-grid -->
+
+            <!-- Prescription Preview -->
+            <div id="preview" class="preview-panel hidden">
+                <div class="preview-toolbar">
+                    <span class="preview-label">📄 Prescription Preview — <span id="previewRxId"></span></span>
+                    <div class="preview-actions">
+                        <button class="btn-ghost" onclick="emailPrescription()">✉ Email Rx</button>
+                        <button class="btn-primary" onclick="printPrescription()">🖨 Print</button>
+                    </div>
+                </div>
+                <div id="previewContent" class="preview-body"></div>
             </div>
         </div>
-    </section>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Dr. Timothy James • Licensed Medical Professional</p>
-            <p>⚠️ Professional tool. Verify all prescriptions before dispensing.</p>
+        <!-- ===== HISTORY VIEW ===== -->
+        <div id="historyView" class="view hidden">
+            <div class="view-header">
+                <div>
+                    <h2>Rx History</h2>
+                    <p class="view-sub">All prescriptions stored on this device</p>
+                </div>
+                <button class="btn-ghost danger" onclick="clearHistory()">🗑 Clear All</button>
+            </div>
+            <div id="historyList" class="history-list"></div>
         </div>
-    </footer>
 
-    <script src="script.js"></script>
+        <!-- ===== CLINIC INFO VIEW ===== -->
+        <div id="profileView" class="view hidden">
+            <div class="view-header">
+                <div>
+                    <h2>Clinic Information</h2>
+                    <p class="view-sub">These details appear on every printed prescription</p>
+                </div>
+                <button class="btn-primary" onclick="saveProfile()">💾 Save Changes</button>
+            </div>
+
+            <div class="rx-form-grid">
+                <div class="card">
+                    <div class="card-title">👨‍⚕️ Doctor Details</div>
+                    <div class="form-group">
+                        <label>Full Name with Title</label>
+                        <input type="text" id="profName" placeholder="e.g. Dr. Timothy James">
+                    </div>
+                    <div class="form-group">
+                        <label>Specialty</label>
+                        <input type="text" id="profSpec" placeholder="e.g. Family Medicine">
+                    </div>
+                    <div class="form-group">
+                        <label>PRC License No.</label>
+                        <input type="text" id="profLicense" placeholder="e.g. 0012345">
+                    </div>
+                    <div class="form-group">
+                        <label>PTR No.</label>
+                        <input type="text" id="profPTR" placeholder="Professional Tax Receipt No.">
+                    </div>
+                    <div class="form-group">
+                        <label>S2 License No. <span class="label-hint">(if applicable)</span></label>
+                        <input type="text" id="profS2" placeholder="Dangerous Drugs Board license">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🏥 Clinic Details</div>
+                    <div class="form-group">
+                        <label>Clinic / Hospital Name</label>
+                        <input type="text" id="profClinic" placeholder="e.g. Santa Maria Medical Clinic">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="profAddress" placeholder="e.g. Santa Maria, Bulacan">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone / Mobile</label>
+                        <input type="tel" id="profPhone" placeholder="e.g. 09505598253">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="profEmail" placeholder="e.g. doctor@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Clinic Hours</label>
+                        <input type="text" id="profHours" placeholder="e.g. Mon–Fri 8AM–6PM, Sat 9AM–2PM">
+                    </div>
+                </div>
+
+                <div class="card full-width">
+                    <div class="card-title">🔒 Security — Change Password</div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" id="currentPass" placeholder="Current password">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password <span class="label-hint">(min 8 characters)</span></label>
+                            <input type="password" id="newPass" placeholder="New password">
+                        </div>
+                    </div>
+                    <button class="btn-ghost" onclick="changePassword()">Update Password</button>
+                    <p class="pass-msg hidden" id="passMsg"></p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
